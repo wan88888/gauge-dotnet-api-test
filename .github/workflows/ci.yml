@@ -23,9 +23,9 @@ jobs:
         dotnet-version: '8.0.x'
     
     - name: Setup Gauge
-      uses: getgauge/setup-gauge@v0.0.1
-      with:
-        gauge-version: '1.6.11'
+      run: |
+        curl -SsL https://downloads.gauge.org/stable | sh
+        gauge telemetry off
     
     - name: Install Gauge dotnet plugin
       run: gauge install dotnet
@@ -41,7 +41,7 @@ jobs:
         gauge run specs/
     
     - name: Archive test reports
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       if: always()
       with:
         name: test-reports
