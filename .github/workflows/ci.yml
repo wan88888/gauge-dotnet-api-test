@@ -31,10 +31,10 @@ jobs:
       run: gauge install dotnet
     
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./gauge-dotnet-api-test.sln
     
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ./gauge-dotnet-api-test.sln --no-restore
     
     - name: Run Gauge tests
       run: |
