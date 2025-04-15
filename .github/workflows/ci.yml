@@ -1,0 +1,51 @@
+name: .NET Gauge API Test CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Setup Gauge
+      uses: getgauge/setup-gauge@v0.0.1
+      with:
+        gauge-version: '1.6.11'
+    
+    - name: Install Gauge dotnet plugin
+      run: gauge install dotnet
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --no-restore
+    
+    - name: Run Gauge tests
+      run: |
+        gauge run specs/
+    
+    - name: Archive test reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-reports
+        path: |
+          reports/
+          Logs/
+        retention-days: 7 
