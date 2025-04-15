@@ -23,9 +23,9 @@ jobs:
         dotnet-version: '8.0.x'
     
     - name: Setup Gauge
-      uses: getgauge/setup-gauge@master
-      with:
-        gauge-version: latest
+      run: |
+        curl -SsL https://downloads.gauge.org/stable | sh
+        gauge --version
     
     - name: Install Gauge dotnet plugin
       run: gauge install dotnet
